@@ -475,6 +475,12 @@
     </style>
 </head>
 <body>
+    <!-- Analytics stub: keeps gtag() calls from crashing the page.
+         Replace with real GA4/GTM IDs when you have them. -->
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function(){ window.dataLayer.push(arguments); };
+    </script>
     <header>
         <div class="logo">Shopsy</div>
         <div class="search-bar">
