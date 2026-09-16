@@ -702,17 +702,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 return;
             }
 
-            gtag('event', 'begin_checkout', { items: cart });
-
-            const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-            const txnId = 'TXN_' + Date.now();
-
-            gtag('event', 'purchase', {
-                transaction_id: txnId,
-                value: total,
-                currency: 'INR',
-                items: cart.map(item => ({ item_id: item.id, item_name: item.name, price: item.price, quantity: item.qty }))
-            });
+            dataLayer.push({
+    event: 'product_details_click',
+    product_id: currentProduct.id,
+    product_name: currentProduct.name,
+    price: currentProduct.price,
+    category: currentProduct.category,
+    rating: currentProduct.rating
+                });
 
             alert('Order Placed!\nTransaction ID: ' + txnId + '\nTotal: ₹' + total);
             cart = [];
