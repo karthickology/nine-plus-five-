@@ -606,8 +606,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 </div>
             `).join('');
         }
-
-       function openProductDetail(id) {
+function openProductDetail(id) {
     currentProduct = allProducts.find(p => p.id === id);
     if (!currentProduct) return;
 
@@ -628,11 +627,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     });
 
     document.getElementById('detailMainImage').src = currentProduct.mainImage;
-    document.getElementById('detailProductName').textContent = currentProduct.name;
-    document.getElementById('detailProductPrice').textContent = '₹' + currentProduct.price;
-    document.getElementById('detailProductCategory').textContent = currentProduct.category;
-    document.getElementById('detailProductRating').textContent = currentProduct.rating;
-    document.getElementById('detailProductDescription').textContent = currentProduct.description;
+    document.getElementById('detailName').textContent = currentProduct.name;
+    document.getElementById('detailPriceCurrent').textContent = '₹' + currentProduct.price;
+    document.getElementById('detailRating').textContent = currentProduct.rating;
+    document.getElementById('detailDescription').textContent = currentProduct.description;
 
     document.getElementById('detailPage').classList.add('active');
 }
