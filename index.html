@@ -607,29 +607,35 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             `).join('');
         }
 
-        function openProductDetail(id) {
-            currentProduct = allProducts.find(p => p.id === id);
-            if (!currentProduct) return;
+       function openProductDetail(id) {
+    currentProduct = allProducts.find(p => p.id === id);
+    if (!currentProduct) return;
 
-            gtag('event', 'view_item', { item_id: currentProduct.id, item_name: currentProduct.name, price: currentProduct.price, currency: 'INR' });
+    dataLayer.push({
+        event: 'product_details_click',
+        product_id: currentProduct.id,
+        product_name: currentProduct.name,
+        price: currentProduct.price,
+        category: currentProduct.category,
+        rating: currentProduct.rating
+    });
 
-            document.getElementById('detailMainImage').src = currentProduct.mainImage;
-            document.getElementById('detailName').textContent = currentProduct.name;
-            document.getElementById('detailRating').textContent = '⭐ ' + currentProduct.rating;
-            document.getElementById('detailPriceCurrent').textContent = '₹' + currentProduct.price;
-            document.getElementById('detailPriceOriginal').textContent = '₹' + currentProduct.originalPrice;
-            document.getElementById('detailDiscount').textContent = Math.round((currentProduct.originalPrice - currentProduct.price) / currentProduct.originalPrice * 100) + '% OFF';
-            document.getElementById('detailDescription').textContent = currentProduct.description;
-            document.getElementById('detailQuantity').value = 1;
+    gtag('event', 'view_item', {
+        item_id: currentProduct.id,
+        item_name: currentProduct.name,
+        price: currentProduct.price,
+        currency: 'INR'
+    });
 
-            const specs = document.getElementById('detailSpecs');
-            specs.innerHTML = '<div class="spec-item"><span class="spec-label">Category:</span> ' + currentProduct.category + '</div><div class="spec-item"><span class="spec-label">Stock:</span> In Stock</div><div class="spec-item"><span class="spec-label">Shipping:</span> Free Delivery</div><div class="spec-item"><span class="spec-label">Returns:</span> 7 Days</div>';
+    document.getElementById('detailMainImage').src = currentProduct.mainImage;
+    document.getElementById('detailProductName').textContent = currentProduct.name;
+    document.getElementById('detailProductPrice').textContent = '₹' + currentProduct.price;
+    document.getElementById('detailProductCategory').textContent = currentProduct.category;
+    document.getElementById('detailProductRating').textContent = currentProduct.rating;
+    document.getElementById('detailProductDescription').textContent = currentProduct.description;
 
-            const thumbs = document.getElementById('detailThumbnails');
-            thumbs.innerHTML = currentProduct.images.map((img, i) => '<img src="' + img + '" class="detail-thumbnail" onclick="switchDetailImage(this.src)" alt="">').join('');
-
-            document.getElementById('detailPage').classList.add('active');
-        }
+    document.getElementById('detailPage').classList.add('active');
+}
 
         function switchDetailImage(src) {
             document.getElementById('detailMainImage').src = src;
@@ -696,25 +702,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             checkout();
         }
 
-        function checkout() {
-            if (cart.length === 0) {
-                alert('Cart is empty!');
-                return;
-            }
+    function checkout() {
+    if (cart.length === 0) {
+        alert('Cart is empty!');
+        return;
+    }
 
-            dataLayer.push({
-    event: 'product_details_click',
-    product_id: currentProduct.id,
-    product_name: currentProduct.name,
-    price: currentProduct.price,
-    category: currentProduct.category,
-    rating: currentProduct.rating
-                });
+    const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    const txnId = 'TXN' + Date.now();
 
-            alert('Order Placed!\nTransaction ID: ' + txnId + '\nTotal: ₹' + total);
-            cart = [];
-            updateCart();
-        }
+    alert('Order Placed!\nTransaction ID: ' + txnId + '\nTotal: ₹' + total);
+
+    cart = [];
+    updateCart();
+}
 
         document.getElementById('searchInput').addEventListener('keyup', (e) => {
             const term = e.target.value.toLowerCase();
