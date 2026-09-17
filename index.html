@@ -702,13 +702,23 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             checkout();
         }
 
-    function checkout() {
+   function checkout() {
     if (cart.length === 0) {
         alert('Cart is empty!');
         return;
     }
 
-    const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    dataLayer.push({
+        event: 'checkout',
+        products: cart.map(item => ({
+            product_id: item.id,
+            product_name: item.name,
+            price: item.price,
+            quantity: item.qty
+        }))
+    });
+
+    const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
     const txnId = 'TXN' + Date.now();
 
     alert('Order Placed!\nTransaction ID: ' + txnId + '\nTotal: ₹' + total);
