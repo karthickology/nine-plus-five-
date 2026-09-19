@@ -699,6 +699,31 @@ function openProductDetail(id) {
             addToCartFromDetail();
             checkout();
         }
+        
+   function buynow() {
+    if (cart.length === 0) {
+        alert('Cart is empty!');
+        return;
+    }
+
+    dataLayer.push({
+        event: 'buynow',
+        products: cart.map(item => ({
+            product_id: item.id,
+            product_name: item.name,
+            price: item.price,
+            quantity: item.qty
+        }))
+    });
+
+    const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+    const txnId = 'TXN' + Date.now();
+
+    alert('Order Placed!\nTransaction ID: ' + txnId + '\nTotal: ₹' + total);
+
+    cart = [];
+    updateCart();
+}
 
    function checkout() {
     if (cart.length === 0) {
