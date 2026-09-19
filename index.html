@@ -695,10 +695,18 @@ function openProductDetail(id) {
             }
         }
 
-        function buyNowFromDetail() {
-            addToCartFromDetail();
-            checkout();
-        }
+       function buyNowFromDetail() {
+    if (!currentProduct) return;
+
+    const qty = parseInt(document.getElementById('detailQuantity').value);
+
+    cart = [{
+        ...currentProduct,
+        qty: qty
+    }];
+
+    checkout();
+}
         
 
    function checkout() {
